@@ -38,7 +38,7 @@ function submitSearch() {
     title: title.value.trim(),
     director: director.value.trim(),
     genre: genre.value,
-    year: year.value.trim()
+    year: String(year.value ?? '').trim()
   }
 
   if (!filters.title && !filters.director && !filters.genre && !filters.year) {

@@ -7,12 +7,13 @@ import WatchedCheckbox from './WatchedCheckbox.vue'
 
 const props = defineProps({
   movie: { type: Object, required: true },
-  mode: { type: String, default: 'library' }
+  mode: { type: String, default: 'library' },
+  inLibrary: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['toggle-favorite', 'toggle-watched', 'rate', 'remove'])
+const emit = defineEmits(['toggle-favorite', 'toggle-watched', 'rate', 'remove', 'add'])
 
-const showLibraryActions = computed(() => props.mode === 'library' || props.mode === 'favorites')
+const showLibraryActions = computed(() => props.mode === 'library' || props.mode === 'favorites' )
 const genresText = computed(() => Array.isArray(props.movie.genres) ? props.movie.genres.join(' · ') : '')
 const posterUrl = computed(() => getPosterUrl(props.movie.poster))
 
@@ -73,6 +74,17 @@ function rate(rating) {
             View details <span aria-hidden="true">→</span>
           </RouterLink>
           <button
+            v-if="mode === 'search'"
+            class="add-button"
+            type="button"
+            :disabled="inLibrary"
+            @click="emit('add', movie.id)"
+          >
+            {{ inLibrary ? 'Already in library' :  'Add to library' }}
+
+          </button>
+
+          <button
             v-if="showLibraryActions"
             class="remove-button"
             type="button"
@@ -127,7 +139,9 @@ function rate(rating) {
 .details-link span { padding-left: 3px; }
 .remove-button { border: 0; background: transparent; padding: 5px 0 5px 8px; color: #b34b5a; font-size: 0.78rem; font-weight: 600; }
 .remove-button:hover { color: #8f2434; text-decoration: underline; }
-
+.add-button { border: 1px solid #6558d3; border-radius: 0; background: #6558d3; padding: 9px 14px; color: white; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+.add-button:hover:not(:disabled) { background: #5144bc; }
+.add-button:disabled { background: #efedff; border-color: #efedff;  color: #8580b3; cursor: not-allowed; }
 @media (max-width: 600px) {
   .movie-card { grid-template-columns: 105px minmax(0, 1fr); }
   .poster-frame, .poster-frame img, .poster-placeholder { min-height: 175px; }

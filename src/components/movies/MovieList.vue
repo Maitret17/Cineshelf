@@ -6,10 +6,11 @@ defineProps({
   mode: { type: String, default: 'library' },
   loading: { type: Boolean, default: false },
   error: { type: String, default: '' },
-  emptyMessage: { type: String, default: 'No movies to show yet.' }
+  emptyMessage: { type: String, default: 'No movies to show yet.' },
+  libraryIds : { type: Array, default: () => [] },
 })
 
-const emit = defineEmits(['toggle-favorite', 'toggle-watched', 'rate', 'remove'])
+const emit = defineEmits(['toggle-favorite', 'toggle-watched', 'rate', 'remove', 'add'])
 </script>
 
 <template>
@@ -40,6 +41,8 @@ const emit = defineEmits(['toggle-favorite', 'toggle-watched', 'rate', 'remove']
         @toggle-watched="emit('toggle-watched', $event)"
         @rate="emit('rate', $event)"
         @remove="emit('remove', $event)"
+        :in-library="libraryIds.includes(movie.id)"
+        @add="emit('add', $event)"
       />
     </div>
   </div>
