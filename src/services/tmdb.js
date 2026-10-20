@@ -1,4 +1,3 @@
-
 const BASE_URL = 'https://api.themoviedb.org/3'
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN
 const MAX_RESULTS = 10
